@@ -10,29 +10,32 @@ use Waavi\Translation\Providers\LanguageEntryProvider as LanguageEntryProvider;
 class FileLoaderCommand extends Command {
 
   /**
-   * The console command name.
-   *
-   * @var string
-   */
+* The console command name.
+*
+* @var string
+*/
   protected $name = 'translator:load';
 
   /**
-   * The console command description.
-   *
-   * @var string
-   */
+* The console command description.
+*
+* @var string
+*/
   protected $description = "Load language files into the database.";
 
-  /**
+
+
+/**
    *  Create a new mixed loader instance.
    *
    *  @param  \Waavi\Lang\Providers\LanguageProvider        $languageProvider
    *  @param  \Waavi\Lang\Providers\LanguageEntryProvider   $languageEntryProvider
    *  @param  \Illuminate\Foundation\Application            $app
    */
-  public function __construct($languageProvider, $languageEntryProvider, $fileLoader)
+  public function __construct($languageProvider, $languageEntryProvider, $fileLoader,\Models\Website $website)
   {
     parent::__construct();
+    $this->website = $website;
     $this->languageProvider       = $languageProvider;
     $this->languageEntryProvider  = $languageEntryProvider;
     $this->fileLoader             = $fileLoader;
@@ -49,14 +52,20 @@ class FileLoaderCommand extends Command {
   {
     $localeDirs = $this->finder->directories($this->path);
     foreach($localeDirs as $localeDir) {
-      $locale = str_replace($this->path.'/', '', $localeDir);
+      $locale = str_replace($this->path, '', $localeDir);
+      $locale = substr($locale,1);
       $language = $this->languageProvider->findByLocale($locale);
+
+      $websites = $this->website->get(array('id'));
       if ($language) {
         $langFiles = $this->finder->files($localeDir);
-        foreach($langFiles as $langFile) {
-          $group = str_replace(array($localeDir.'/', '.php'), '', $langFile);
-          $lines = $this->fileLoader->loadRawLocale($locale, $group);
-          $this->languageEntryProvider->loadArray($lines, $language, $group, null, $locale == $this->fileLoader->getDefaultLocale());
+        foreach($websites as $website){
+          foreach($langFiles as $langFile) {
+            $group = str_replace(array($localeDir.'/', '.php'), '', $langFile);
+            $lines = $this->fileLoader->loadRawLocale($locale, $group);
+            
+            $this->languageEntryProvider->loadArray($lines, $language, $group, $website->id, null, $locale == $this->fileLoader->getDefaultLocale());
+          }
         }
       }
     }

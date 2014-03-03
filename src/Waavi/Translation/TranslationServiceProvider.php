@@ -100,7 +100,8 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 			$languageProvider 	= new LanguageProvider($app['config']['waavi/translation::language.model']);
 			$langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
 			$fileLoader 				= new FileLoader($languageProvider, $langEntryProvider, $app);
-			return new Commands\FileLoaderCommand($languageProvider, $langEntryProvider, $fileLoader);
+			$website = new \Models\Website;
+			return new Commands\FileLoaderCommand($languageProvider, $langEntryProvider, $fileLoader,$website);
 		});
 	}
 

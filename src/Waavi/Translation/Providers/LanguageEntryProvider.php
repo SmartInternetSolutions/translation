@@ -109,7 +109,7 @@ class LanguageEntryProvider {
 	 *	@param boolean 		$isDefault
 	 *	@return void
 	 */
-	public function loadArray(array $lines, $language, $group, $namespace = null, $isDefault = false)
+	public function loadArray(array $lines, $language, $group,$website_id, $namespace = null, $isDefault = false)
 	{
 		if (! $namespace) {
 			$namespace = '*';
@@ -122,6 +122,7 @@ class LanguageEntryProvider {
 				->createModel()
 				->newQuery()
 				->where('namespace', '=', $namespace)
+				->where('website_id','=',$website_id)
 	      ->where('group', '=', $group)
 	      ->where('item', '=', $item)
 	      ->where('language_id', '=', $language->id)
@@ -134,6 +135,7 @@ class LanguageEntryProvider {
 	    // The entry doesn't exist:
 	    else {
 	    	$entry = $this->createModel();
+	    	$entry->website_id = $website_id;
 	    	$entry->namespace = $namespace;
 		    $entry->group = $group;
 		    $entry->item = $item;

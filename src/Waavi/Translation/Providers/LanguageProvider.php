@@ -42,6 +42,17 @@ class LanguageProvider {
 	}
 
 	/**
+	 * Find the language by ISO.
+	 *
+	 * @param  string  $locale
+	 * @return Eloquent NULL in case no language entry was found.
+	 */
+	public function findByLocaleAndWebsiteId($locale,$website_id)
+	{
+		return $this->createModel()->newQuery()->where('locale', '=', $locale)->where('website_id','=',$website_id)->first();
+	}
+
+	/**
 	 * Find the language by name.
 	 *
 	 * @param  string  $name
