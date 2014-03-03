@@ -26,11 +26,12 @@ class MixedLoader extends Loader implements LoaderInterface {
 	 * 	@param 	\Waavi\Lang\Providers\LanguageEntryProvider		$languageEntryProvider
 	 *	@param 	\Illuminate\Foundation\Application  					$app
 	 */
-	public function __construct($languageProvider, $languageEntryProvider, $app)
+	public function __construct($languageProvider, $languageEntryProvider, $app, $website_id=null)
 	{
 		parent::__construct($languageProvider, $languageEntryProvider, $app);
 		$this->fileLoader 		= new FileLoader($languageProvider, $languageEntryProvider, $app);
-		$this->databaseLoader = new DatabaseLoader($languageProvider, $languageEntryProvider, $app);
+		$this->databaseLoader = new DatabaseLoader($languageProvider, $languageEntryProvider, $app, $website_id);
+		$this->website_id = $website_id;
 	}
 
 	/**
@@ -44,6 +45,6 @@ class MixedLoader extends Loader implements LoaderInterface {
 	public function loadRawLocale($locale, $group, $namespace = null)
 	{
 		$namespace = $namespace ?: '*';
-		return array_merge($this->databaseLoader->loadRawLocale($locale, $group, $namespace), $this->fileLoader->loadRawLocale($locale, $group, $namespace));
+		return array_merge($this->fileLoader->loadRawLocale($locale, $group, $namespace), $this->databaseLoader->loadRawLocale($locale, $group, $namespace));
 	}
 }
