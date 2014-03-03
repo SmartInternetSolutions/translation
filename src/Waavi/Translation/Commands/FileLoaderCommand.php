@@ -54,12 +54,12 @@ class FileLoaderCommand extends Command {
     foreach($localeDirs as $localeDir) {
       $locale = str_replace($this->path, '', $localeDir);
       $locale = substr($locale,1);
-      $language = $this->languageProvider->findByLocale($locale);
-
       $websites = $this->website->get(array('id'));
-      if ($language) {
-        $langFiles = $this->finder->files($localeDir);
-        foreach($websites as $website){
+      foreach($websites as $website){
+        $language = $this->languageProvider->findByLocaleAndWebsiteId($locale,$website->id);
+
+        if ($language) {
+          $langFiles = $this->finder->files($localeDir);      
           foreach($langFiles as $langFile) {
             $group = str_replace(array($localeDir.'/', '.php'), '', $langFile);
             $lines = $this->fileLoader->loadRawLocale($locale, $group);

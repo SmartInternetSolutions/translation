@@ -63,10 +63,11 @@ class Loader implements LoaderInterface {
 	 * 	@param 	\Waavi\Lang\Providers\LanguageEntryProvider		$languageEntryProvider
 	 *	@param 	\Illuminate\Foundation\Application  					$app
 	 */
-	public function __construct($languageProvider, $languageEntryProvider, $app)
+	public function __construct($languageProvider, $languageEntryProvider, $app, $website_id=null)
 	{
 		$this->setApp($app);
 		$this->setProviders($languageProvider, $languageEntryProvider);
+		$this->website_id = $website_id;
 	}
 
 	/**

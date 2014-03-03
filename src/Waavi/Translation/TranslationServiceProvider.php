@@ -51,7 +51,6 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 			$locale = $app['config']['app.locale'];
 
 			$trans = new Translator($loader, $locale);
-
 			return $trans;
 		});
 	}
@@ -68,7 +67,7 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 		{
 			$languageProvider 	= new LanguageProvider($app['config']['waavi/translation::language.model']);
 			$langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
-
+			$website_id = \Session::get('website_id');
 			$mode = $app['config']['waavi/translation::mode'];
 
 			if ($mode == 'auto' || empty($mode)){
@@ -83,7 +82,7 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 					return new FileLoader($languageProvider, $langEntryProvider, $app);
 
 				case 'database':
-					return new DatabaseLoader($languageProvider, $langEntryProvider, $app);
+					return new DatabaseLoader($languageProvider, $langEntryProvider, $app, $website_id);
 			}
 		});
 	}

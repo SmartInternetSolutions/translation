@@ -19,9 +19,9 @@ class DatabaseLoader extends Loader implements LoaderInterface {
 	{
 		$langArray 	= array();
 		$namespace = $namespace ?: '*';
-		$language 	= $this->languageProvider->findByLocale($locale);
+		$language 	= $this->languageProvider->findByLocaleAndWebsiteId($locale,$this->website_id);
 		if ($language) {
-			$entries = $language->entries()->where('group', '=', $group)->where('namespace', '=', $namespace)->get();
+			$entries = $language->entries()->where('website_id','=',$this->website_id)->where('group', '=', $group)->where('namespace', '=', $namespace)->get();
 			if ($entries) {
 				foreach($entries as $entry) {
 					array_set($langArray, $entry->item, $entry->text);
