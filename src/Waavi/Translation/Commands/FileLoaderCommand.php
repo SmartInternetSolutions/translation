@@ -50,12 +50,12 @@ class FileLoaderCommand extends Command {
    */
   public function fire()
   {
-
-    // $options = $this->option();
-    // if($options['create']=='true' && array_key_exists('locale',$options) && array_key_exists('name',$options)){
-    //  $this->createLanguage();
-    // }
+    //find locale directories
     $localeDirs = $this->finder->directories($this->path);
+    //if website_id was provided then we will load translations only for this website
+    if($website_id = $this->option('website_id')!==null){
+      $this->website->where('website_id',$website_id);
+    }
     $websites = $this->website->get(array('id'));
     foreach($localeDirs as $localeDir) {
       $locale = str_replace($this->path, '', $localeDir);
@@ -79,7 +79,7 @@ class FileLoaderCommand extends Command {
       }
     }
   }
-
+   
   protected function createLanguage(){
     if($this->option('website_id') == null){
       $this->error('You must provide a website id as parameter.');
@@ -94,13 +94,10 @@ class FileLoaderCommand extends Command {
      *
      * @return array
      */
-    // protected function getOptions()
-    // {
-    //     return array(
-    //       array('create',null,InputOption::VALUE_OPTIONAL,'If there should be language created in database before entries are loaded (true or false)'),
-    //         array('locale', null, InputOption::VALUE_OPTIONAL, 'Name of locale to load eg. en, de'),
-    //         array('name', null, InputOption::VALUE_OPTIONAL, 'Full name of locale eg. english, german, french'),
-    //         array('website_id', null, InputOption::VALUE_OPTIONAL, 'Id of website to create language for.')
-    //     );
-    // }
+    protected function getOptions()
+    {
+        return array(
+            array('website_id', null, InputOption::VALUE_OPTIONAL, 'Id of website to create language for.')
+        );
+    }
 }
