@@ -50,24 +50,57 @@ class FileLoaderCommand extends Command {
    */
   public function fire()
   {
+
+    // $options = $this->option();
+    // if($options['create']=='true' && array_key_exists('locale',$options) && array_key_exists('name',$options)){
+    //  $this->createLanguage();
+    // }
     $localeDirs = $this->finder->directories($this->path);
+    $websites = $this->website->get(array('id'));
     foreach($localeDirs as $localeDir) {
       $locale = str_replace($this->path, '', $localeDir);
       $locale = substr($locale,1);
-      $websites = $this->website->get(array('id'));
+      
       foreach($websites as $website){
         $language = $this->languageProvider->findByLocaleAndWebsiteId($locale,$website->id);
 
         if ($language) {
-          $langFiles = $this->finder->files($localeDir);      
+          $langFiles = $this->finder->allFiles($localeDir);  
           foreach($langFiles as $langFile) {
-            $group = str_replace(array($localeDir.'/', '.php'), '', $langFile);
-            $lines = $this->fileLoader->loadRawLocale($locale, $group);
-            
-            $this->languageEntryProvider->loadArray($lines, $language, $group, $website->id, null, $locale == $this->fileLoader->getDefaultLocale());
+            //get relative file path and change slashes to make them more consistent
+            $relativeFilePath = str_replace('\\','/',$langFile->getRelativePathName());
+            //if file exists in admin directory then move to next file
+            if(strpos($relativeFilePath,'admin/') !== FALSE) continue;
+              $group = str_replace('.php','',$relativeFilePath);
+              $lines = $this->fileLoader->loadRawLocale($locale, $group);
+              $this->languageEntryProvider->loadArray($lines, $language, $group, $website->id, null, $locale == $this->fileLoader->getDefaultLocale()); 
           }
         }
       }
     }
   }
+
+  protected function createLanguage(){
+    if($this->option('website_id') == null){
+      $this->error('You must provide a website id as parameter.');
+      die();
+    }
+    
+    $this->languageProvider->create(array_only($this->options(),array('locale','name','website_id')));
+  }
+
+      /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    // protected function getOptions()
+    // {
+    //     return array(
+    //       array('create',null,InputOption::VALUE_OPTIONAL,'If there should be language created in database before entries are loaded (true or false)'),
+    //         array('locale', null, InputOption::VALUE_OPTIONAL, 'Name of locale to load eg. en, de'),
+    //         array('name', null, InputOption::VALUE_OPTIONAL, 'Full name of locale eg. english, german, french'),
+    //         array('website_id', null, InputOption::VALUE_OPTIONAL, 'Id of website to create language for.')
+    //     );
+    // }
 }
