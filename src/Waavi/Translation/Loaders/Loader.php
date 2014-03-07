@@ -139,12 +139,16 @@ class Loader implements LoaderInterface {
 	 * @param  string  $locale
 	 * @param  string  $group
 	 * @param  string  $namespace
+	 * @param  boolean $freshCache force clearing cache
 	 * @return array
 	 */
-	public function load($locale, $group, $namespace = null)
+	public function load($locale, $group, $namespace = null, $freshCache=false)
 	{
 		$namespace = $namespace ?: '*';
-		$cacheKey = "waavi|translation|$this->website_id|$locale.$group.$namespace";
+		$cacheKey = $this->getCacheKey($locale,$group,$namespace);
+		//if we set freshCache then we clear specific cache key before we take any further actions
+		$freshCache==true ? $this->app['cache']->forget($cacheKey) : true;
+
 		$lines 		= $this->cacheEnabled && $this->app['cache']->has($cacheKey) ?
 								$this->app['cache']->get($cacheKey) :
 								$this->loadRaw($locale, $group, $namespace);
@@ -155,6 +159,10 @@ class Loader implements LoaderInterface {
 		return $lines;
 	}
 
+
+	protected function getCacheKey($locale,$group,$namespace=null){
+		return "waavi|translation|$this->website_id|$locale.$group.$namespace";
+	}
 	/**
 	 * Load the messages for the given locale without checking the cache or in case of a cache miss. Merge with the default locale messages.
 	 *
