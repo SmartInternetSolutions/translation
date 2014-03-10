@@ -107,9 +107,10 @@ class LanguageEntryProvider {
 	 *	@param string 		$group
 	 *	@param string 		$namespace
 	 *	@param boolean 		$isDefault
+	 *	@param  boolean $onlyNew if set to true, only lines that did not exist would be added, no lines would be updated with new text
 	 *	@return void
 	 */
-	public function loadArray(array $lines, $language, $group,$website_id, $namespace = null, $isDefault = false)
+	public function loadArray(array $lines, $language, $group,$website_id, $namespace = null, $isDefault = false, $onlyNew = false)
 	{
 		if (! $namespace) {
 			$namespace = '*';
@@ -130,7 +131,8 @@ class LanguageEntryProvider {
 
 	    // If the entry already exists, we update the text:
 	    if ($entry) {
-	    	$entry->updateText($text, $isDefault);
+	    	//if onlyNew is set to true then we just return as we dont want to update text
+	    	$onlyNew ? false : $entry->updateText($text, $isDefault);
 	    }
 	    // The entry doesn't exist:
 	    else {

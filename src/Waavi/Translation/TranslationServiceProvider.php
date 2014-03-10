@@ -37,10 +37,10 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 		$this->package('waavi/translation', 'waavi/translation', __DIR__.'/../..');
 
 		$this->registerLoader();
-		$this->registerTranslationFileLoader();
+		$this->registerTranslationFileLoaders();
 
 		$this->commands('translator.load');
-
+		$this->commands('translator.loadEnglishAll');
 		$this->app['translator'] = $this->app->share(function($app)
 		{
 			$loader = $app['translation.loader'];
@@ -92,7 +92,7 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function registerTranslationFileLoader()
+	public function registerTranslationFileLoaders()
 	{
 		$this->app['translator.load'] = $this->app->share(function($app)
 		{
@@ -100,10 +100,19 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 			$langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
 			$fileLoader 				= new FileLoader($languageProvider, $langEntryProvider, $app);
 			$website = new \Models\Website;
+
 			return new Commands\FileLoaderCommand($languageProvider, $langEntryProvider, $fileLoader,$website);
 		});
-	}
+		$this->app['translator.loadEnglishAll'] = $this->app->share(function($app)
+		{
+			$languageProvider 	= new LanguageProvider($app['config']['waavi/translation::language.model']);
+			$langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
+			$fileLoader 				= new FileLoader($languageProvider, $langEntryProvider, $app);
+			$website = new \Models\Website;
 
+			return new Commands\FileLoaderEnglishAllCommand($languageProvider, $langEntryProvider, $fileLoader,$website);
+		});
+	}
 	/**
 	 * Get the services provided by the provider.
 	 *
