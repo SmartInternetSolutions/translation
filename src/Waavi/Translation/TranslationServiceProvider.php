@@ -41,18 +41,20 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 
 		$this->commands('translator.load');
 		$this->commands('translator.loadEnglishAll');
-		$this->app['translator'] = $this->app->share(function($app)
-		{
-			$loader = $app['translation.loader'];
+        
+        if (!isset($this->app['translator'])) {
+            $this->app['translator'] = $this->app->share(function($app)
+            {
+                $loader = $app['translation.loader'];
 
-			// When registering the translator component, we'll need to set the default
-			// locale as well as the fallback locale. So, we'll grab the application
-			// configuration so we can easily get both of these values from there.
-			$locale = $app['config']['app.locale'];
+                // When registering the translator component, we'll need to set the default
+                // locale as well as the fallback locale. So, we'll grab the application
+                // configuration so we can easily get both of these values from there.
+                $locale = $app['config']['app.locale'];
 
-			$trans = new Translator($loader, $locale);
-			return $trans;
-		});
+                return new Translator($loader, $locale);
+            });
+        }
 	}
 
 	/**
@@ -63,28 +65,30 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 	protected function registerLoader()
 	{
 		$app = $this->app;
-		$this->app['translation.loader'] = $this->app->share(function($app)
-		{
-			$languageProvider 	= new LanguageProvider($app['config']['waavi/translation::language.model']);
-			$langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
-			$website_id = \WebsiteHelper::getCurrentAdminWebsiteId();
-			$mode = $app['config']['waavi/translation::mode'];
+        
+        if (!isset($this->app['translation.loader'])) {
+            $this->app['translation.loader'] = $this->app->share(function($app) {
+                $languageProvider 	= new LanguageProvider($app['config']['waavi/translation::language.model']);
+                $langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
+                $website_id = null;
+                $mode = $app['config']['waavi/translation::mode'];
 
-			if ($mode == 'auto' || empty($mode)){
-				$mode = ($app['config']['app.debug'] ? 'mixed' : 'database');
-			}
+                if ($mode == 'auto' || empty($mode)){
+                    $mode = ($app['config']['app.debug'] ? 'mixed' : 'database');
+                }
 
-			switch ($mode) {
-				case 'mixed':
-					return new MixedLoader($languageProvider, $langEntryProvider, $app, $website_id);
+                switch ($mode) {
+                    case 'mixed':
+                        return new MixedLoader($languageProvider, $langEntryProvider, $app, $website_id);
 
-				default: case 'filesystem':
-					return new FileLoader($languageProvider, $langEntryProvider, $app);
+                    default: case 'filesystem':
+                        return new FileLoader($languageProvider, $langEntryProvider, $app);
 
-				case 'database':
-					return new DatabaseLoader($languageProvider, $langEntryProvider, $app, $website_id);
-			}
-		});
+                    case 'database':
+                        return new DatabaseLoader($languageProvider, $langEntryProvider, $app, $website_id);
+                }
+            });
+        }
 	}
 
 	/**
