@@ -1,11 +1,18 @@
 {
-    "name": "waavi/translation",
-    "description": "A Translation package for Laravel 4 with database and cache support",
+    "name": "SmartInternetSolutions/translation",
+    "description": "A Translation package for Laravel 4 with database, cache and multiple website support. This package is based on waavi/translation and has been extended by maksymcierzniak for multi-website support.",
     "license": "MIT",
     "authors": [
         {
             "name": "Waavi",
             "email": "info@waavi.com"
+        },
+        {
+            "name": "maksymcierzniak"
+        },
+        {
+            "name": "Smart Internet Solutions",
+            "email": "opensource@smartinternetsolutions.net"
         }
     ],
     "require": {
@@ -20,7 +27,7 @@
             "src/migrations"
         ],
         "psr-0": {
-            "Waavi\\Translation": "src/"
+            "SmartInternetSolutions\\Translation": "src/"
         }
     },
     "minimum-stability": "dev"

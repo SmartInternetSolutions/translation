@@ -1,4 +1,4 @@
-<?php namespace Waavi\Translation\Providers;
+<?php namespace SmartInternetSolutions\Translation\Providers;
 
 class LanguageEntryProvider {
 
@@ -6,7 +6,7 @@ class LanguageEntryProvider {
 	 *	The Eloquent language entry model.
 	 *	@var string
 	 */
-	protected $model = 'Waavi\Translation\Models\LanguageEntry';
+	protected $model = 'SmartInternetSolutions\Translation\Models\LanguageEntry';
 
 	/**
 	 * Create a new Eloquent LangEntry provider.
@@ -64,9 +64,9 @@ class LanguageEntryProvider {
 
 	/**
 	 *	Returns a language entry that is untranslated in the specified language.
-	 *	@param Waavi\Translation\Models\Language 				$reference
-	 *	@param Waavi\Translation\Models\Language 				$target
-	 *	@return Waavi\Translation\Models\LanguageEntry
+	 *	@param SmartInternetSolutions\Translation\Models\Language 				$reference
+	 *	@param SmartInternetSolutions\Translation\Models\Language 				$target
+	 *	@return SmartInternetSolutions\Translation\Models\LanguageEntry
 	 */
 	public function findUntranslated($reference, $target)
 	{

@@ -1,6 +1,6 @@
-<?php namespace Waavi\Translation\Models;
+<?php namespace SmartInternetSolutions\Translation\Models;
 
-use Waavi\Model\WaaviModel;
+use SmartInternetSolutions\Model\WaaviModel;
 
 class Language extends WaaviModel {
 
@@ -36,7 +36,7 @@ class Language extends WaaviModel {
    */
   public function entries()
   {
-  	return $this->hasMany('Waavi\Translation\Models\LanguageEntry');
+  	return $this->hasMany('SmartInternetSolutions\Translation\Models\LanguageEntry');
   }
 
   /**

@@ -1,12 +1,12 @@
-<?php namespace Waavi\Translation;
+<?php namespace SmartInternetSolutions\Translation;
 
 use Illuminate\Translation\TranslationServiceProvider as LaravelTranslationServiceProvider;
-use Waavi\Translation\Facades\Translator;
-use Waavi\Translation\Loaders\FileLoader;
-use Waavi\Translation\Loaders\DatabaseLoader;
-use Waavi\Translation\Loaders\MixedLoader;
-use Waavi\Translation\Providers\LanguageProvider;
-use Waavi\Translation\Providers\LanguageEntryProvider;
+use SmartInternetSolutions\Translation\Facades\Translator;
+use SmartInternetSolutions\Translation\Loaders\FileLoader;
+use SmartInternetSolutions\Translation\Loaders\DatabaseLoader;
+use SmartInternetSolutions\Translation\Loaders\MixedLoader;
+use SmartInternetSolutions\Translation\Providers\LanguageProvider;
+use SmartInternetSolutions\Translation\Providers\LanguageEntryProvider;
 use Config;
 
 class TranslationServiceProvider extends LaravelTranslationServiceProvider {
@@ -34,7 +34,7 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 	 */
 	public function register()
 	{
-		$this->package('waavi/translation', 'waavi/translation', __DIR__.'/../..');
+		$this->package('SmartInternetSolutions/translation', 'SmartInternetSolutions/translation', __DIR__.'/../..');
 
 		$this->registerLoader();
 		$this->registerTranslationFileLoaders();
@@ -68,10 +68,10 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
         
         if (!isset($this->app['translation.loader'])) {
             $this->app['translation.loader'] = $this->app->share(function($app) {
-                $languageProvider 	= new LanguageProvider($app['config']['waavi/translation::language.model']);
-                $langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
+                $languageProvider 	= new LanguageProvider($app['config']['SmartInternetSolutions/translation::language.model']);
+                $langEntryProvider 	= new LanguageEntryProvider($app['config']['SmartInternetSolutions/translation::language_entry.model']);
                 $website_id = null;
-                $mode = $app['config']['waavi/translation::mode'];
+                $mode = $app['config']['SmartInternetSolutions/translation::mode'];
 
                 if ($mode == 'auto' || empty($mode)){
                     $mode = ($app['config']['app.debug'] ? 'mixed' : 'database');
@@ -100,8 +100,8 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 	{
 		$this->app['translator.load'] = $this->app->share(function($app)
 		{
-			$languageProvider 	= new LanguageProvider($app['config']['waavi/translation::language.model']);
-			$langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
+			$languageProvider 	= new LanguageProvider($app['config']['SmartInternetSolutions/translation::language.model']);
+			$langEntryProvider 	= new LanguageEntryProvider($app['config']['SmartInternetSolutions/translation::language_entry.model']);
 			$fileLoader 				= new FileLoader($languageProvider, $langEntryProvider, $app);
 			$website = new \Models\Website;
 
@@ -109,8 +109,8 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 		});
 		$this->app['translator.loadEnglishAll'] = $this->app->share(function($app)
 		{
-			$languageProvider 	= new LanguageProvider($app['config']['waavi/translation::language.model']);
-			$langEntryProvider 	= new LanguageEntryProvider($app['config']['waavi/translation::language_entry.model']);
+			$languageProvider 	= new LanguageProvider($app['config']['SmartInternetSolutions/translation::language.model']);
+			$langEntryProvider 	= new LanguageEntryProvider($app['config']['SmartInternetSolutions/translation::language_entry.model']);
 			$fileLoader 				= new FileLoader($languageProvider, $langEntryProvider, $app);
 			$website = new \Models\Website;
 

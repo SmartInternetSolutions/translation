@@ -1,6 +1,6 @@
-<?php namespace Waavi\Translation\Models;
+<?php namespace SmartInternetSolutions\Translation\Models;
 
-use Waavi\Model\WaaviModel;
+use SmartInternetSolutions\Model\WaaviModel;
 
 class LanguageEntry extends WaaviModel {
 
@@ -35,13 +35,13 @@ class LanguageEntry extends WaaviModel {
    */
   public function language()
   {
-  	return $this->belongsTo('Waavi\Translation\Models\Language');
+  	return $this->belongsTo('SmartInternetSolutions\Translation\Models\Language');
   }
 
   /**
    *  Return the language entry in the default language that corresponds to this entry.
-   *  @param Waavi\Translation\Models\Language  $defaultLanguage
-   *  @return Waavi\Translation\Models\LanguageEntry
+   *  @param SmartInternetSolutions\Translation\Models\Language  $defaultLanguage
+   *  @return SmartInternetSolutions\Translation\Models\LanguageEntry
    */
   public function original($defaultLanguage)
   {
@@ -92,8 +92,8 @@ class LanguageEntry extends WaaviModel {
   /**
    *  Returns a list of entries that contain a translation for this item in the given language.
    *
-   *  @param Waavi\Translation\Models\Language
-   *  @return Waavi\Translation\Models\LanguageEntry
+   *  @param SmartInternetSolutions\Translation\Models\Language
+   *  @return SmartInternetSolutions\Translation\Models\LanguageEntry
    */
   public function getSuggestedTranslations($language)
   {

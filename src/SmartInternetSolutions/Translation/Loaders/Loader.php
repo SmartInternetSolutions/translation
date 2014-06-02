@@ -1,9 +1,9 @@
-<?php namespace Waavi\Translation\Loaders;
+<?php namespace SmartInternetSolutions\Translation\Loaders;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Translation\LoaderInterface;
-use Waavi\Translation\Providers\LanguageProvider as LanguageProvider;
-use Waavi\Translation\Providers\LanguageEntryProvider as LanguageEntryProvider;
+use SmartInternetSolutions\Translation\Providers\LanguageProvider as LanguageProvider;
+use SmartInternetSolutions\Translation\Providers\LanguageEntryProvider as LanguageEntryProvider;
 
 class Loader implements LoaderInterface {
 
@@ -17,14 +17,14 @@ class Loader implements LoaderInterface {
 	/**
 	 * The language provider, used to access the Language model dynamically.
 	 *
-	 * @var \Waavi\Translation\Providers\LanguageProvider
+	 * @var \SmartInternetSolutions\Translation\Providers\LanguageProvider
 	 */
 	protected $languageProvider;
 
 	/**
 	 * The language entry provider, used to access the LanguageEntry model dynamically.
 	 *
-	 * @var \Waavi\Translation\Providers\LanguageEntryProvider
+	 * @var \SmartInternetSolutions\Translation\Providers\LanguageEntryProvider
 	 */
 	protected $languageEntryProvider;
 
@@ -59,8 +59,8 @@ class Loader implements LoaderInterface {
 	/**
 	 * 	Create a new loader instance.
 	 *
-	 * 	@param  \Waavi\Lang\Providers\LanguageProvider  			$languageProvider
-	 * 	@param 	\Waavi\Lang\Providers\LanguageEntryProvider		$languageEntryProvider
+	 * 	@param  \SmartInternetSolutions\Lang\Providers\LanguageProvider  			$languageProvider
+	 * 	@param 	\SmartInternetSolutions\Lang\Providers\LanguageEntryProvider		$languageEntryProvider
 	 *	@param 	\Illuminate\Foundation\Application  					$app
 	 */
 	public function __construct($languageProvider, $languageEntryProvider, $app, $website_id=null)
@@ -79,15 +79,15 @@ class Loader implements LoaderInterface {
 	{
 		$this->app 						= $app;
 		$this->defaultLocale 	= $app['config']['app.locale'];
-		$this->cacheTimeout 	= $app['config']['waavi/translation::cache.timeout'];
-		$this->cacheEnabled		= $app['config']['waavi/translation::cache.enabled'] == 'on'
-														|| ($app['config']['waavi/translation::cache.enabled'] == 'auto' && !$app['config']['app.debug']);
+		$this->cacheTimeout 	= $app['config']['SmartInternetSolutions/translation::cache.timeout'];
+		$this->cacheEnabled		= $app['config']['SmartInternetSolutions/translation::cache.enabled'] == 'on'
+														|| ($app['config']['SmartInternetSolutions/translation::cache.enabled'] == 'auto' && !$app['config']['app.debug']);
 	}
 
 	/**
 	 *	Sets the language and language entry providers.
-	 * 	@param  \Waavi\Translation\Providers\LanguageProvider  				$languageProvider
-	 * 	@param 	\Waavi\Translation\Providers\LanguageEntryProvider		$languageEntryProvider
+	 * 	@param  \SmartInternetSolutions\Translation\Providers\LanguageProvider  				$languageProvider
+	 * 	@param 	\SmartInternetSolutions\Translation\Providers\LanguageEntryProvider		$languageEntryProvider
 	 * 	@return void
 	 */
 	protected function setProviders($languageProvider, $languageEntryProvider)
@@ -117,7 +117,7 @@ class Loader implements LoaderInterface {
 
 	/**
 	 *	Returns the language provider:
-	 *	@return Waavi\Translation\Providers\LanguageProvider
+	 *	@return SmartInternetSolutions\Translation\Providers\LanguageProvider
 	 */
 	public function getLanguageProvider()
 	{
@@ -126,7 +126,7 @@ class Loader implements LoaderInterface {
 
 	/**
 	 *	Returns the language entry provider:
-	 *	@return Waavi\Translation\Providers\LanguageEntryProvider
+	 *	@return SmartInternetSolutions\Translation\Providers\LanguageEntryProvider
 	 */
 	public function getLanguageEntryProvider()
 	{
@@ -161,7 +161,7 @@ class Loader implements LoaderInterface {
 
 
 	protected function getCacheKey($locale,$group,$namespace=null){
-		return "waavi|translation|$this->website_id|$locale.$group.$namespace";
+		return "SmartInternetSolutions|translation|$this->website_id|$locale.$group.$namespace";
 	}
 	/**
 	 * Load the messages for the given locale without checking the cache or in case of a cache miss. Merge with the default locale messages.

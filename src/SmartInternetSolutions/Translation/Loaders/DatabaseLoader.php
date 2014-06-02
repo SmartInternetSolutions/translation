@@ -1,9 +1,9 @@
-<?php namespace Waavi\Translation\Loaders;
+<?php namespace SmartInternetSolutions\Translation\Loaders;
 
 use Illuminate\Translation\LoaderInterface;
-use Waavi\Translation\Loaders\Loader;
-use Waavi\Translation\Providers\LanguageProvider as LanguageProvider;
-use Waavi\Translation\Providers\LanguageEntryProvider as LanguageEntryProvider;
+use SmartInternetSolutions\Translation\Loaders\Loader;
+use SmartInternetSolutions\Translation\Providers\LanguageProvider as LanguageProvider;
+use SmartInternetSolutions\Translation\Providers\LanguageEntryProvider as LanguageEntryProvider;
 
 class DatabaseLoader extends Loader implements LoaderInterface {
 

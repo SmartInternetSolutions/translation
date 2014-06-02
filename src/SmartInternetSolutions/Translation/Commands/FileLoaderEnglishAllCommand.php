@@ -1,11 +1,11 @@
-<?php namespace Waavi\Translation\Commands;
+<?php namespace SmartInternetSolutions\Translation\Commands;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Waavi\Translation\Providers\LanguageProvider as LanguageProvider;
-use Waavi\Translation\Providers\LanguageEntryProvider as LanguageEntryProvider;
+use SmartInternetSolutions\Translation\Providers\LanguageProvider as LanguageProvider;
+use SmartInternetSolutions\Translation\Providers\LanguageEntryProvider as LanguageEntryProvider;
 
 class FileLoaderEnglishAllCommand extends Command {
 
@@ -28,8 +28,8 @@ class FileLoaderEnglishAllCommand extends Command {
 /**
    *  Create a new mixed loader instance.
    *
-   *  @param  \Waavi\Lang\Providers\LanguageProvider        $languageProvider
-   *  @param  \Waavi\Lang\Providers\LanguageEntryProvider   $languageEntryProvider
+   *  @param  \SmartInternetSolutions\Lang\Providers\LanguageProvider        $languageProvider
+   *  @param  \SmartInternetSolutions\Lang\Providers\LanguageEntryProvider   $languageEntryProvider
    *  @param  \Illuminate\Foundation\Application            $app
    */
   public function __construct($languageProvider, $languageEntryProvider, $fileLoader,\Models\Website $website)

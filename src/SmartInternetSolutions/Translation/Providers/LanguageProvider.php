@@ -1,4 +1,4 @@
-<?php namespace Waavi\Translation\Providers;
+<?php namespace SmartInternetSolutions\Translation\Providers;
 
 class LanguageProvider {
 
@@ -6,7 +6,7 @@ class LanguageProvider {
 	 *	The Eloquent language model.
 	 *	@var string
 	 */
-	protected $model = 'Waavi\Translation\Models\Language';
+	protected $model = 'SmartInternetSolutions\Translation\Models\Language';
 
 	/**
 	 * Create a new Eloquent Language provider.
@@ -107,7 +107,7 @@ class LanguageProvider {
 	/**
 	 * Returns all languages except the one passed by parameter.
 	 *
-	 * @param  Waavi\Translation\Models\Language 	$language
+	 * @param  SmartInternetSolutions\Translation\Models\Language 	$language
 	 * @return array
 	 */
 	public function findAllExcept($language)
