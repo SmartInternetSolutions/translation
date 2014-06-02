@@ -1,6 +1,6 @@
 <?php namespace SmartInternetSolutions\Translation\Models;
 
-use SmartInternetSolutions\Model\WaaviModel;
+use Waavi\Model\WaaviModel;
 
 class LanguageEntry extends WaaviModel {
 
