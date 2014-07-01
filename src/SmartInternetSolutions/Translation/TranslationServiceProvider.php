@@ -7,7 +7,6 @@ use SmartInternetSolutions\Translation\Loaders\DatabaseLoader;
 use SmartInternetSolutions\Translation\Loaders\MixedLoader;
 use SmartInternetSolutions\Translation\Providers\LanguageProvider;
 use SmartInternetSolutions\Translation\Providers\LanguageEntryProvider;
-use Config;
 
 class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 
@@ -37,10 +36,7 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 		$this->package('SmartInternetSolutions/translation', 'SmartInternetSolutions/translation', __DIR__.'/../..');
 
 		$this->registerLoader();
-		$this->registerTranslationFileLoaders();
-
-		$this->commands('translator.load');
-		$this->commands('translator.loadEnglishAll');
+		$this->registerCommands();
         
         if (!isset($this->app['translator'])) {
             $this->app['translator'] = $this->app->share(function($app)
@@ -64,8 +60,6 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 	 */
 	protected function registerLoader()
 	{
-		$app = $this->app;
-        
         if (!isset($this->app['translation.loader'])) {
             $this->app['translation.loader'] = $this->app->share(function($app) {
                 $languageProvider 	= new LanguageProvider($app['config']['SmartInternetSolutions/translation::language.model']);
@@ -92,30 +86,39 @@ class TranslationServiceProvider extends LaravelTranslationServiceProvider {
 	}
 
 	/**
-	 * Register the translation file loader command.
-	 *
+     * register commands
+     * 
 	 * @return void
 	 */
-	public function registerTranslationFileLoaders()
+	public function registerCommands()
 	{
-		$this->app['translator.load'] = $this->app->share(function($app)
-		{
+		$this->app['translator.load'] = $this->app->share(function ($app) {
 			$languageProvider 	= new LanguageProvider($app['config']['SmartInternetSolutions/translation::language.model']);
 			$langEntryProvider 	= new LanguageEntryProvider($app['config']['SmartInternetSolutions/translation::language_entry.model']);
-			$fileLoader 				= new FileLoader($languageProvider, $langEntryProvider, $app);
+			$fileLoader 		= new FileLoader($languageProvider, $langEntryProvider, $app);
 			$website = new \Models\Website;
 
 			return new Commands\FileLoaderCommand($languageProvider, $langEntryProvider, $fileLoader,$website);
 		});
-		$this->app['translator.loadEnglishAll'] = $this->app->share(function($app)
-		{
+
+		$this->commands('translator.load');
+        
+		$this->app['translator.loadEnglishAll'] = $this->app->share(function ($app) {
 			$languageProvider 	= new LanguageProvider($app['config']['SmartInternetSolutions/translation::language.model']);
 			$langEntryProvider 	= new LanguageEntryProvider($app['config']['SmartInternetSolutions/translation::language_entry.model']);
-			$fileLoader 				= new FileLoader($languageProvider, $langEntryProvider, $app);
+			$fileLoader 		= new FileLoader($languageProvider, $langEntryProvider, $app);
 			$website = new \Models\Website;
 
 			return new Commands\FileLoaderEnglishAllCommand($languageProvider, $langEntryProvider, $fileLoader,$website);
 		});
+        
+		$this->commands('translator.loadEnglishAll');
+        
+        $this->app['translator.find'] = $this->app->share(function () {
+            return new Commands\FindTranslationUsages;
+        });
+        
+		$this->commands('translator.find');
 	}
 	/**
 	 * Get the services provided by the provider.
